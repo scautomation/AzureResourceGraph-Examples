@@ -2,7 +2,7 @@
 
 ## Disks
 Resources    
-| where type contains "microsoft.compute/disks"   
+| where type has "microsoft.compute/disks"   
 | extend diskState = tostring(properties.diskState)  
 | where managedBy == ""  
     or diskState == 'Unattached'  
@@ -11,7 +11,7 @@ Resources
 
 ## NICS
 resources  
-| where type contains "microsoft.network/networkinterfaces"  
+| where type has "microsoft.network/networkinterfaces"  
 | where "{nicWithPrivateEndpoints}" !has id    
 | where properties !has 'virtualmachine'  
 | project id, resourceGroup, location, subscriptionId
