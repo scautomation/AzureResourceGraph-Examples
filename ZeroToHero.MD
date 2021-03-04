@@ -5,19 +5,19 @@
 - [Kusto Query Lanaguage](#Kusto-Query-Language)  
 - [Access](#Access)  
 - [Tables](#Tables)
-    -  [List of Tables](#List-of-Current-Tables) 
+    -  [List of Tables](#List-of-Current-Tables)
 - [Resource Types](#Resource-Types)
 - [Dynamic Types](#Dynamic-Types)
     - [Operators to Know](#Operators-to-Know)
-    - [Basic Examples](#Basic-Examples)
-    - [Advanced Examples](#Advanced-Examples)
+    - [Basic Examples](#Dynamic-Types---Basic-Examples)
+    - [Advanced Examples](#Dynamic-Types---Advanced-Examples)
 &nbsp;&nbsp;  
 ## Purpose
 To provide a guided walk through of learning Azure Resource Graph from the basics, to advanced queries.
 &nbsp;&nbsp;  
 &nbsp;&nbsp;  
 ## Kusto Query Language
-Azure Resource Graph uses Kusto Query Language(KQL). It uses a subset of the language, meaning not all scalar operators are available.    
+Azure Resource Graph uses Kusto Query Language (KQL). It uses a subset of the language, meaning not all scalar operators are available.    
 
 Some notable examples of things you cannot do or use in Azure Resource Graph.    
 
@@ -121,10 +121,8 @@ these two queries will produce exactly the same result. Each will produce a new 
 Tolower and tostring are self explanatory, mv-expand expands array objects or dynamic type objects into multiple values.
 &nbsp;&nbsp;  
 &nbsp;&nbsp; 
-&nbsp;&nbsp;    
-### Examples  
-&nbsp;&nbsp;  
-#### Basic examples
+&nbsp;&nbsp;     
+### Dynamic Types - Basic Examples
 
 The easiest properties to exract are the first layer inside a dynamic object. One of the most common things you may want to extract is the Sku of your resources.   
 
@@ -157,9 +155,48 @@ resources
 adding tostring() around properties.hardwareProfile.vmSize will accomplish this goal. 
 &nbsp;&nbsp;  
 &nbsp;&nbsp; 
-#### Advanced Examples
+#### Dynamic Types - Advanced Examples
 &nbsp;&nbsp;   
-Once you dwelve deeper into the dynamic type objects, you'll find there are certain property types that you cannot use the above dot notation to get.
+Once you dwelve deeper into the dynamic type objects, you'll find there are certain property types that you cannot use the above dot notation to get. You'll know because they typically have brackets around curly braces like this [{}].  
+
+Application Gateways have a front end IP configuration. Within the properties field in Resource Graph the front end configuration is inside brackets with curly braces.   
+We can get at the data by using addressing the first element of an array
+
+resources
+| where type =~ 'microsoft.network/applicationgateways'
+| extend frontEndConfig = properties.frontendIPConfigurations.[0].properties
+
+But this is inefficient, what if your data changes per resource type, or you just want all the objects in the array and don't know how many will be in each resource.
+
+this is when we'll want to use mv-expand
+
+resources  
+| where type =~ 'microsoft.network/applicationgateways'  
+| mv-expand frontEndConfig = properties.frontendIPConfigurations   
+
+Now, publicIpId is addressable dot notation, or another mv-expand to get at the data we want. To get the resource ID of the public IP of the Application Gateway we can add an extend on to the end of our previous query.
+
+resources  
+| where type =~ 'microsoft.network/applicationgateways'  
+| mv-expand frontEndConfig=properties.frontendIPConfigurations  
+| extend publicIpId = frontEndConfig = `properties.properties.publicIPAddress.id`
+
+Continuing with Application Gateway example, underneath the same frontEndConfig is a second data property inside brackets. The http listener. To get the resource ID of the http listener we need to do a second mv-expand.
+
+resources  
+| where type =~ 'microsoft.network/applicationgateways'  
+| mv-expand frontEndConfig=properties.frontendIPConfigurations  
+| extend publicIp = `frontEndConfig.properties.publicIPAddress.id`  
+| mv-expand httpListeners = frontEndConfig.properties.httpListeners  
+
+and finally to get the http listener we can do another extend.
+
+resources  
+| where type =~ 'microsoft.network/applicationgateways'  
+| mv-expand frontEndConfig=properties.frontendIPConfigurations  
+| extend publicIp = `frontEndConfig.properties.publicIPAddress.id`  
+| mv-expand httpListeners = frontEndConfig.properties.httpListeners  
+| extend httpListenerId = `httpListeners.id`  
 
 
 
