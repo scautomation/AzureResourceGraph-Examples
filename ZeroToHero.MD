@@ -157,13 +157,13 @@ adding tostring() around properties.hardwareProfile.vmSize will accomplish this 
 &nbsp;&nbsp; 
 #### Dynamic Types - Advanced Examples
 &nbsp;&nbsp;   
-Once you dwelve deeper into the dynamic type objects, you'll find there are certain property types that you cannot use the above dot notation to get. You'll know because they typically have brackets around curly braces like this [{}].  
+Once you delve deeper into the dynamic type objects, you'll find there are certain property types that you cannot use the above dot notation to get. You'll know because they typically have brackets around curly braces like this [{}].  
 
 Application Gateways have a front end IP configuration. Within the properties field in Resource Graph the front end configuration is inside brackets with curly braces.   
 We can get at the data by using addressing the first element of an array
 
-resources
-| where type =~ 'microsoft.network/applicationgateways'
+resources  
+| where type =~ 'microsoft.network/applicationgateways'  
 | extend frontEndConfig = properties.frontendIPConfigurations.[0].properties
 
 But this is inefficient, what if your data changes per resource type, or you just want all the objects in the array and don't know how many will be in each resource.
