@@ -30,6 +30,11 @@ resources
 | extend VirtualMachines = array_length(properties.virtualMachines)  
 | where VirtualMachines == 0  
 
+## Public IPs
+resources
+| where type =~ 'microsoft.network/publicipaddresses'
+| extend IpConfig = properties.ipConfiguration.id
+| where isempty(IpConfig)
 ## Networking
 ### NSGs
 Resources  

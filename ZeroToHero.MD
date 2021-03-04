@@ -1,7 +1,16 @@
 # Azure Resource Graph - Zero to Hero
 
-## Table of Contents
-[link](#Dynamic Types)
+## Table of Contents  
+- [Purpose](#Purpose)  
+- [Kusto Query Lanaguage](#Kusto-Query-Language)  
+- [Access](#Access)  
+- [Tables](#Tables)
+    -  [List of Tables](#List-of-Current-Tables) 
+- [Resource Types](#Resource-Types)
+- [Dynamic Types](#Dynamic-Types)
+    - [Operators to Know](#Operators-to-Know)
+    - [Basic Examples](#Basic-Examples)
+    - [Advanced Examples](#Advanced-Examples)
 &nbsp;&nbsp;  
 ## Purpose
 To provide a guided walk through of learning Azure Resource Graph from the basics, to advanced queries.
@@ -39,6 +48,21 @@ resources
 Are the same query and produce the same results. I would consider it a better practice to always declare a table, as there are now other tables to choose from than just the resources table.
 &nbsp;&nbsp;  
 &nbsp;&nbsp;  
+### List of Current tables
+- resources
+- advisorresources
+- alertsmanagementresources
+- guestconfigurationresources
+- maintenanceresources
+- patchassessmentresources
+- pathcinstallationresources
+- policyresources
+- recoveryservicesresources
+- resourcecontainers
+- securityresources
+- servicehealthresources
+&nbsp;&nbsp;  
+&nbsp;&nbsp;
 ## Resource Types
 When querying the resources table, every resource has a resource type, in Azure these are your resource providers. 
 
@@ -66,22 +90,8 @@ resources
 | where type =~ 'microsoft.operationalinsights/workspaces'
 &nbsp;&nbsp;  
 &nbsp;&nbsp;  
-### List of Current tables
-- resources
-- advisorresources
-- alertsmanagementresources
-- guestconfigurationresources
-- maintenanceresources
-- patchassessmentresources
-- pathcinstallationresources
-- policyresources
-- recoveryservicesresources
-- resourcecontainers
-- securityresources
-- servicehealthresources
-&nbsp;&nbsp;  
-&nbsp;&nbsp;  
-### Dynamic Types ###
+  
+## Dynamic Types 
 This section is usefull to any product that uses Kusto Query Language, but is key in extracting useful data out of Azure Resource Graph.   
 
 Once you get beyond querying basic items like resource groups, subscriptions and resource types, you'll find many of the properites of your resources are underneath fields of dynamic type that often hold nested JSON-like values. Sometimes there are multiple levels of nested objects in one field, typically in the properties field of your resources.
