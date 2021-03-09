@@ -21,10 +21,11 @@ Azure Resource Graph uses Kusto Query Language (KQL). It uses a subset of the la
 
 Some notable examples of things you cannot do or use in Azure Resource Graph.    
 
-You cannot use let.  
-You can only do 3 joins.
-Evaluate and its operators are not available.   
-To see the full language reference refer to the offical docs here.  
+- You cannot use let  
+- You can only do 3 joins  
+- Evaluate and its operators are not available  
+
+To see the full language reference refer to the offical docs here. https://docs.microsoft.com/en-us/azure/governance/resource-graph/concepts/query-language  
 &nbsp;&nbsp;  
 &nbsp;&nbsp;  
 ## Access
@@ -40,7 +41,7 @@ This query:
 
 where type =~ 'microsoft.compute/virtualmachines'
 
-and
+and this query
 
 resources  
 | where type =~ 'micrososft.compute/virtualmachines'
@@ -199,6 +200,7 @@ resources
 | extend httpListenerId = `httpListeners.id`  
 
 
+## Practical Examples
 
 
 
