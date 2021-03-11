@@ -291,7 +291,7 @@ resources
 | extend UpdateCompliance = iif(Solutions has 'WaaSUpdateInsights','Enabled','Not Enabled')
 ````
 
-
+```` Kusto
 // orphaned resources
 //Find orphaned disks
 Resources
@@ -299,17 +299,17 @@ Resources
 | extend diskState = tostring(properties.diskState)
 | where managedBy == "" or diskState == 'Unattached'
 | project id, diskState, resourceGroup, location, subscriptionId
+````
 
-
-
+```` Kusto
 // find orphaned availability sets
 resources
 | where type =~ 'microsoft.compute/availabilitysets'
 | extend VirtualMachines = array_length(properties.virtualMachines)
 | where VirtualMachines == 0
+````
 
-
-
+```` Kusto
 //find orphaned nics
 resources
 | where type =~ "microsoft.network/networkinterfaces"
@@ -321,3 +321,4 @@ resources
 | where isempty(id1)
 | where properties !has 'virtualmachine'
 | project id, resourceGroup, location, subscriptionId
+````
