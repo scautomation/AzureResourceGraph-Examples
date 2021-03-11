@@ -142,7 +142,7 @@ resources
 | where type =~ `'microsoft.web/sites'`  
 | extend State = properties.state  
 ````
-Sometimes we can go two layers deep in a dynamic object without any problems. This example will show you how to get the VM Hardware size of your Azure VMs.
+We can traverse as many layers deep in a dynamic object without any problems, until we run into brackets. This example will show you how to get the VM Hardware size of your Azure VMs.
 ```` kusto
 resources  
 | where type =~ 'microsoft.compute/virtualmachines'  
@@ -183,7 +183,7 @@ Now, publicIpId is addressable dot notation, or another mv-expand to get at the 
 resources  
 | where type =~ 'microsoft.network/applicationgateways'  
 | mv-expand frontEndConfig=properties.frontendIPConfigurations  
-| extend publicIpId = frontEndConfig = `properties.properties.publicIPAddress.id`
+| extend publicIpId = frontEndConfig = properties.properties.publicIPAddress.id
 
 ````
 Continuing with Application Gateway example, underneath the same frontEndConfig is a second data property inside brackets. The http listener. To get the resource ID of the http listener we need to do a second mv-expand.
@@ -193,7 +193,7 @@ Continuing with Application Gateway example, underneath the same frontEndConfig 
 resources  
 | where type =~ 'microsoft.network/applicationgateways'  
 | mv-expand frontEndConfig=properties.frontendIPConfigurations  
-| extend publicIp = `frontEndConfig.properties.publicIPAddress.id`  
+| extend publicIp = frontEndConfig.properties.publicIPAddress.id
 | mv-expand httpListeners = frontEndConfig.properties.httpListeners  
 ````
 
@@ -202,7 +202,7 @@ and finally to get the http listener we can do another extend.
 resources  
 | where type =~ 'microsoft.network/applicationgateways'  
 | mv-expand frontEndConfig=properties.frontendIPConfigurations  
-| extend publicIp = `frontEndConfig.properties.publicIPAddress.id`  
+| extend publicIp = frontEndConfig.properties.publicIPAddress.id  
 | mv-expand httpListeners = frontEndConfig.properties.httpListeners  
 | extend httpListenerId = `httpListeners.id`  
 ````
