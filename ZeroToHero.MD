@@ -292,4 +292,32 @@ resources
 ````
 
 
+// orphaned resources
+//Find orphaned disks
+Resources
+| where type has "microsoft.compute/disks"
+| extend diskState = tostring(properties.diskState)
+| where managedBy == "" or diskState == 'Unattached'
+| project id, diskState, resourceGroup, location, subscriptionId
 
+
+
+// find orphaned availability sets
+resources
+| where type =~ 'microsoft.compute/availabilitysets'
+| extend VirtualMachines = array_length(properties.virtualMachines)
+| where VirtualMachines == 0
+
+
+
+//find orphaned nics
+resources
+| where type =~ "microsoft.network/networkinterfaces"
+| join kind=leftouter (resources
+| where type =~ 'microsoft.network/privateendpoints'
+| extend nic = properties.networkInterfaces
+| mv-expand nic
+| project id=tostring(nic.id) ) on id
+| where isempty(id1)
+| where properties !has 'virtualmachine'
+| project id, resourceGroup, location, subscriptionId
