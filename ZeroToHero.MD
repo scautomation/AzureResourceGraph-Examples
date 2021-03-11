@@ -100,25 +100,10 @@ Once you get beyond querying basic items like resource groups, subscriptions and
 This section will aim to show you different ways to accomplish extracting data from dynamic types.
 
 ### Operators to know
-These are the most common operators you need when working with dynamic types.  
-- todynamic()   
-- parse_json()  
+These are the most common operators you need when working with dynamic types.    
 - mv-expand   
 - tolower()  
 - tostring()
-
-todynamic and parse_json are synonyms, meaning they perform the exact same funtion. You may see someone use one and someone else use the other, there is no right or wrong way.  
-```` kusto
-resources  
-| where type =~ 'Microsoft.Network/privateEndpoints'  
-| extend nics = parse_json(properties.networkInterfaces)  
-````
-```` kusto
-resources  
-| where type =~ 'Microsoft.Network/privateEndpoints'  
-| extend nics = todynamic(properties.networkInterfaces)
-````
-these two queries will produce exactly the same result. Each will produce a new field called 'nics' with the resource ID of the private endpoint nic inside it. 
 
 Tolower and tostring are self explanatory, mv-expand expands array objects or dynamic type objects into multiple values.
 &nbsp;&nbsp;  
@@ -183,7 +168,7 @@ Now, publicIpId is addressable dot notation, or another mv-expand to get at the 
 resources  
 | where type =~ 'microsoft.network/applicationgateways'  
 | mv-expand frontEndConfig=properties.frontendIPConfigurations  
-| extend publicIpId = frontEndConfig = properties.properties.publicIPAddress.id
+| extend publicIpId = frontEndConfig.properties.publicIPAddress.id
 
 ````
 Continuing with Application Gateway example, underneath the same frontEndConfig is a second data property inside brackets. The http listener. To get the resource ID of the http listener we need to do a second mv-expand.
