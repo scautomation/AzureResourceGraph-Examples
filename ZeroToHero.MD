@@ -139,7 +139,7 @@ This query creates replaces the sku field, which is empty for App Services, and 
 We can also get the current state of our App Service from under the properties field.   
 ```` kusto
 resources  
-| where type =~ `'microsoft.web/sites'`  
+| where type =~ 'microsoft.web/sites'
 | extend State = properties.state  
 ````
 We can traverse as many layers deep in a dynamic object without any problems, until we run into brackets. This example will show you how to get the VM Hardware size of your Azure VMs.
