@@ -189,7 +189,7 @@ resources
 | mv-expand frontEndConfig=properties.frontendIPConfigurations  
 | extend publicIp = frontEndConfig.properties.publicIPAddress.id  
 | mv-expand httpListeners = frontEndConfig.properties.httpListeners  
-| extend httpListenerId = `httpListeners.id`  
+| extend httpListenerId = httpListeners.id 
 ````
 
 ## Practical Examples with Joins
