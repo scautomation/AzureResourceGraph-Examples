@@ -90,7 +90,7 @@ resources
 | extend Sku = properties.sku.name  
 | extend RetentionInDays = properties.retentionInDays  
 | extend Details = pack_all()  
-| project Workspace=id, resourceGroup, location, subscriptionId, Sku, RetentionInDays, Detailss
+| project Workspace=id, resourceGroup, location, subscriptionId, Sku, RetentionInDays, Details
 
 ## Log Analytics Installed Solutions
 note: this is not all available solutions, but are typically the most commonly used in my experience
