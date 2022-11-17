@@ -31,10 +31,14 @@ resources
 | where VirtualMachines == 0  
 
 ## Public IPs
-resources  
-| where type =~ 'microsoft.network/publicipaddresses'  
-| extend IpConfig = properties.ipConfiguration.id  
+resources
+| where type =~ 'microsoft.network/publicipaddresses'
+| extend IpConfig = properties.ipConfiguration.id
 | where isempty(IpConfig)
+| extend natGateway = properties.natGateway.id
+| where isempty(natGateway)
+| order by ['name'] asc
+
 ## Networking
 ### NSGs
 Resources  
