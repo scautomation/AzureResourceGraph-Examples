@@ -53,3 +53,24 @@ Resources
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sourcePortRange = nsgRule.properties.sourcePortRange    
 | extend Details = pack_all()  
 | project id, location, access, direction, subscriptionId, resourceGroup, Details
+
+## User Defined Routes
+
+``` kql
+resources
+| where type =~ 'microsoft.network/routetables'
+| project id, routes = parse_json(parse_json(properties).routes), routeTableName = name, subscriptionId, resourceGroup, location
+| mvexpand route = routes
+| project id,
+    location,
+    addressPrefix=route.properties.addressPrefix,
+    nextHopType=route.properties.nextHopType,
+    nextHopIpAddress=route.properties.nextHopIpAddress,
+    hasBgpOverride=route.properties.hasBgpOverride,
+    routeTableName,
+    routeName = tostring(route.name),
+    subscriptionId,
+    resourceGroup
+| extend Details = pack_all()
+| project id, routeTableName, location, addressPrefix, nextHopType, nextHopIpAddress, subscriptionId, resourceGroup, Details
+```
