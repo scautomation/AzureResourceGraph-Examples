@@ -6,15 +6,19 @@ Provides examples of how to query Azure Resources with Kusto Query Language
 ### All Resources
 Returns count of all Azure Resources
 
-Resources | summarize count(type)
+``` KQL
+Resources | summarize count()
+```
 
 ### Count Subscriptions and Resource Groups
 Returns count of Subscriptions and Resource Groups
 
-resourcecontainers 
+```KQL 
+resourcecontainers   
 | where type has "microsoft.resources/subscriptions/resourcegroups"
 | summarize Count=count(type) by type, subscriptionId 
 | extend type = replace(@"microsoft.resources/subscriptions/resourcegroups", @"Resource Groups", type)
+```
 
 ### Count Resources by Type
 While everything is technically a resource in Azure. Counting VM extensions and Disks for an overview seems counter productive, thus I exclude a few items from being captured in this query.
