@@ -29,6 +29,17 @@ Alerting on Azure Resource Graph data recently went public preview. To succesful
 - any resource(s) you want to alert on
 - log analytics reader
 
+[Official Docs](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/azure-monitor-data-explorer-proxy#query-data-in-azure-resource-graph-preview)
+
+[Log Analytics PG Post](https://techcommunity.microsoft.com/t5/azure-observability-blog/query-azure-resource-graph-from-azure-monitor/ba-p/3918298)
+
+My posts on the topic:  
+[Managed Identity in Azure Monitor Alerts](https://www.cloudsma.com/2023/08/managed-identity-for-azure-monitor-log-alerts/)
+
+[Query Azure Resource Graph from Log Analytics](https://www.cloudsma.com/2023/09/query-azure-resource-graph-log-analytics/)
+
+[Alerts on ARG Data in Azure Monitor](https://www.cloudsma.com/2023/10/azure-monitor-alerts-from-azure-resource-graph/)
+
 ## Alerts for Compute Resources
 
 ### Performance & Heartbeat Alerts
