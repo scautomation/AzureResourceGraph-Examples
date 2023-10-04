@@ -25,9 +25,10 @@
     - [vNet Peering state is disconnected](#vnet-peering-state-is-disconnected)
 
 ## About
-Alerting on Azure Resource Graph data recently went public preview. To succesfully create alerts in Azure Monitor using ARG Data you will need a Managed Identity with reader access to:
-- any resource(s) you want to alert on
-- log analytics reader
+Alerting on Azure Resource Graph data recently went public preview. To succesfully create alerts in Azure Monitor using ARG Data you will need a Managed Identity with reader access to:  
+
+- any resource(s) you want to alert on  
+- log analytics reader on a Log Analytics Workspace
 
 [Official Docs](https://learn.microsoft.com/en-us/azure/azure-monitor/logs/azure-monitor-data-explorer-proxy#query-data-in-azure-resource-graph-preview)
 
