@@ -20,6 +20,7 @@
       - [Alert on Empty Availability Sets](#alert-on-empty-availability-sets)
       - [Alert on Empty Load Balancers](#alert-on-empty-load-balancers)
       - [Alert on Orhpaned NICs](#alert-on-orhpaned-nics)
+      - [Alert on unused NAT Gateway](#alert-on-unused-nat-gateway)
   - [Alert on Resource Changes](#alert-on-resource-changes)
     - [Alert on any resource deletion](#alert-on-any-resource-deletion)
     - [vNet Peering state is disconnected](#vnet-peering-state-is-disconnected)
@@ -253,6 +254,15 @@ arg("").Resources
         and properties.hostedWorkloads == "[]"
         and properties !has 'virtualmachine'
 | summarize EmptyNICs = count() by subscriptionId
+```
+
+#### Alert on unused NAT Gateway
+
+```kql
+resources
+| where type == "microsoft.network/natgateways"
+| where isnull(properties.subnets)
+| summarize count(type) by subscriptionId
 ```
 
 ## Alert on Resource Changes
