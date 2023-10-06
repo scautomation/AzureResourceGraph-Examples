@@ -215,7 +215,7 @@ arg("").Resources
 
 #### Alert on Empty App Service Plans
 
-```
+```kql
 arg("").resources
 | where type =~ "microsoft.web/serverfarms"
 | extend sites = toint(properties.numberOfSites),
