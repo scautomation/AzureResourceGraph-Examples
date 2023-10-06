@@ -259,7 +259,7 @@ arg("").Resources
 #### Alert on unused NAT Gateway
 
 ```kql
-resources
+arg("").resources
 | where type == "microsoft.network/natgateways"
 | where isnull(properties.subnets)
 | summarize count(type) by subscriptionId
@@ -270,7 +270,7 @@ resources
 ### Alert on any resource deletion  
 
 ```kql
-resourcechanges
+arg("").resourcechanges
 | extend Target = tostring(properties.targetResourceType),
         changeType = tostring(properties.changeType),
         targetResourceId = tostring(properties.targetResourceId),
