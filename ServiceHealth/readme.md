@@ -104,4 +104,3 @@ servicehealthresources
 | extend Details = pack_all()
 | project subscriptionId, id, Title, {Columns}, Details, properties, link, name
 ```
-
